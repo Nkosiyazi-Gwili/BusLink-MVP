@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { mockRoutes, mockTrips, generateBookingCode } from '@/lib/mock-data';
+import { Card } from '@/components/LayoutWrapper';
 
 type Screen = 'dialer' | 'menu' | 'route-selection' | 'time-selection' | 'confirmation' | 'success' | 'ride-complete';
 
@@ -20,12 +21,14 @@ export default function USSDSimulator() {
       if (inputValue === '*123') {
         setScreen('menu');
       } else if (inputValue === '*123*888' && screen === 'dialer') {
-        // Special code for ride completion
         setScreen('ride-complete');
       }
       setInputValue('');
     } else if (key === '*') {
       setInputValue(inputValue + key);
+    } else if (key === '⌫') {
+      // Backspace functionality
+      setInputValue(inputValue.slice(0, -1));
     } else {
       setInputValue(inputValue + key);
     }
@@ -42,7 +45,7 @@ export default function USSDSimulator() {
       case '3':
         alert('Dial *123# to book a trip. Contact support: 0800-BUSLINK');
         break;
-      case '4': // New option for ride completion
+      case '4':
         setScreen('ride-complete');
         break;
       default:
@@ -67,7 +70,6 @@ export default function USSDSimulator() {
   };
 
   const handleRideCompletion = () => {
-    // Simulate recording ride completion
     const completionData = {
       bookingCode: 'USS-' + Math.random().toString(36).substring(2, 7).toUpperCase(),
       route: 'Sample Route',
@@ -78,7 +80,6 @@ export default function USSDSimulator() {
       completedAt: new Date().toISOString()
     };
 
-    // Store completion for admin dashboard
     const completions = JSON.parse(sessionStorage.getItem('ride_completions') || '[]');
     completions.push(completionData);
     sessionStorage.setItem('ride_completions', JSON.stringify(completions));
@@ -97,8 +98,10 @@ export default function USSDSimulator() {
             <div className="bg-gray-900 p-3 rounded-lg mb-4 w-full max-w-xs">
               <p className="text-2xl font-bold tracking-widest text-green-400">{inputValue}</p>
             </div>
-            <p className="text-xs text-gray-500">Press # to send</p>
-           
+            <p className="text-xs text-gray-500 mb-2">Press # to send</p>
+            {inputValue.length > 0 && (
+              <p className="text-xs text-gray-400">Press ⌫ to backspace</p>
+            )}
           </div>
         );
       
@@ -221,7 +224,6 @@ export default function USSDSimulator() {
           <div className="h-full flex flex-col px-4 overflow-y-auto">
             <p className="text-center text-green-400 mb-4">Ride Completion</p>
             
-            {/* Rating */}
             <div className="mb-4">
               <p className="text-sm mb-2">Rate your trip (1-5):</p>
               <div className="flex justify-center space-x-1 mb-2">
@@ -246,7 +248,6 @@ export default function USSDSimulator() {
               </p>
             </div>
 
-            {/* Donation */}
             <div className="mb-6">
               <p className="text-sm mb-2">Donate R0.50 to charity?</p>
               <div className="flex space-x-2">
@@ -272,7 +273,6 @@ export default function USSDSimulator() {
               )}
             </div>
 
-            {/* Instructions */}
             <div className="bg-gray-700 p-3 rounded-lg mb-4">
               <p className="text-xs text-gray-400 text-center">
                 Press 1 to confirm completion
@@ -326,7 +326,6 @@ export default function USSDSimulator() {
     }
   };
 
-  // Standard phone keypad layout: 123, 456, 789, *0#
   const keypadLayout = [
     ['1', '2', '3'],
     ['4', '5', '6'],
@@ -335,16 +334,22 @@ export default function USSDSimulator() {
   ];
 
   return (
-    <div className="flex flex-col items-center justify-center p-4 bg-gray-100 min-h-screen w-full">
-      <div className="w-full max-w-sm bg-black text-green-400 p-6 rounded-3xl shadow-2xl font-mono mx-auto">
-      
-        {/* Main screen */}
+    <Card className="w-full max-w-md mx-auto">
+      <div className="text-center mb-6">
+        <h3 className="text-2xl font-bold text-gray-800 mb-2">USSD Simulator</h3>
+        <p className="text-gray-600">Experience BusLink's USSD service</p>
+      </div>
+
+      <div className="bg-black text-green-400 p-6 rounded-3xl shadow-2xl font-mono">
+        {/* Phone status bar */}
+            {/* Main screen */}
         <div className="bg-gray-800 h-72 p-4 rounded-xl mb-6 overflow-y-auto">
           {renderScreen()}
         </div>
 
-        {/* Standard phone keypad layout */}
-        <div className="grid grid-rows-4 gap-2 mb-4">
+        {/* Keypad with backspace button */}
+        <div className="grid grid-rows-5 gap-2 mb-4">
+          {/* Number keypad */}
           {keypadLayout.map((row, rowIndex) => (
             <div key={rowIndex} className="grid grid-cols-3 gap-2">
               {row.map((key) => (
@@ -358,9 +363,22 @@ export default function USSDSimulator() {
               ))}
             </div>
           ))}
+          
+          {/* Backspace row */}
+          <div className="grid grid-cols-3 gap-2">
+            <div></div> {/* Empty spacer */}
+            <button
+              onClick={() => handleKeypadClick('⌫')}
+              disabled={inputValue.length === 0}
+              className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl transition-colors flex items-center justify-center text-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              ⌫
+            </button>
+            <div></div> {/* Empty spacer */}
+          </div>
         </div>
 
-        {/* Navigation buttons */}
+        {/* Navigation */}
         <div className="flex justify-center space-x-4">
           <button
             onClick={handleBack}
@@ -368,14 +386,24 @@ export default function USSDSimulator() {
           >
             Back
           </button>
+          <button
+            onClick={() => setScreen('dialer')}
+            className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white text-sm rounded-lg transition-colors"
+          >
+            End
+          </button>
         </div>
       </div>
 
-      {/* Mobile-friendly instructions */}
-      <div className="mt-6 text-center text-sm text-gray-600 max-w-sm mx-auto">
-        <p>💡 Tip: Dial <strong>*123#</strong> for from menu</p>
-        <p>💡 Tip: Dial <strong>*123*888#</strong> for ride completion or select option 4 from menu</p>
+      <div className="mt-6 text-center">
+        <p className="text-sm text-gray-600">
+          💡 <strong>Quick Tips:</strong><br/>
+          • Dial <strong>*123#</strong> for main menu<br/>
+          • Dial <strong>*123*888#</strong> for ride completion<br/>
+          • Use <strong>⌫</strong> to backspace<br/>
+          • Select option 4 from menu for ride completion
+        </p>
       </div>
-    </div>
+    </Card>
   );
 }
