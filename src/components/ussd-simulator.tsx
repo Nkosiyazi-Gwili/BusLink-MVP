@@ -98,10 +98,7 @@ export default function USSDSimulator() {
               <p className="text-2xl font-bold tracking-widest text-green-400">{inputValue}</p>
             </div>
             <p className="text-xs text-gray-500">Press # to send</p>
-            <p className="text-xs text-gray-400 mt-4">
-              *123# for menu<br/>
-              *123*888# for ride completion
-            </p>
+           
           </div>
         );
       
@@ -376,6 +373,7 @@ export default function USSDSimulator() {
 
       {/* Mobile-friendly instructions */}
       <div className="mt-6 text-center text-sm text-gray-600 max-w-sm mx-auto">
+        <p>💡 Tip: Dial <strong>*123#</strong> for from menu</p>
         <p>💡 Tip: Dial <strong>*123*888#</strong> for ride completion or select option 4 from menu</p>
       </div>
     </div>
