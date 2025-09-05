@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 export default function AdminLogin() {
   const [credentials, setCredentials] = useState({ username: '', password: '' });
@@ -30,8 +31,14 @@ export default function AdminLogin() {
     <div className="min-h-screen bg-gradient-to-br from-blue-600 to-blue-800 flex items-center justify-center p-4">
       <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <span className="text-2xl text-blue-600">🚌</span>
+          {/* Logo */}
+          <div className="mx-auto mb-4 w-20 h-20 relative">
+            <Image
+              src="/logo.jpeg"   // Make sure the file is in /public
+              alt="BusLink Logo"
+              fill
+              className="object-contain rounded-full"
+            />
           </div>
           <h1 className="text-2xl font-bold text-gray-800">BusLink Admin</h1>
           <p className="text-gray-600 mt-2">Operator Dashboard</p>

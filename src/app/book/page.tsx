@@ -1,7 +1,8 @@
-'use client';
+'use client'; 
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import { mockRoutes, mockTrips, generateBookingCode } from '@/lib/mock-data';
 
 export default function BookPage() {
@@ -175,8 +176,13 @@ export default function BookPage() {
         {/* Empty state when no search performed */}
         {!availableTrips && !isSearching && (
           <div className="text-center py-12">
-            <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span className="text-2xl">🚌</span>
+            <div className="w-16 h-16 relative mx-auto mb-4">
+              <Image
+                src="/logo.jpeg"
+                alt="BusLink Logo"
+                fill
+                className="object-contain rounded-full"
+              />
             </div>
             <h3 className="text-lg font-semibold text-gray-800 mb-2">Find Your Perfect Trip</h3>
             <p className="text-gray-600">Search for available routes and times to get started.</p>

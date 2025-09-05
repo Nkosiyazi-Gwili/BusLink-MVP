@@ -1,26 +1,25 @@
-import Link from 'next/link';
-import USSDSimulator from '@/components/ussd-simulator';
-import LayoutWrapper, { CenteredContent, Card } from '@/components/LayoutWrapper';
+import Image from "next/image";
+import Link from "next/link";
+import USSDSimulator from "@/components/ussd-simulator";
+import LayoutWrapper, { CenteredContent, Card } from "@/components/LayoutWrapper";
 
 export default function Home() {
   return (
     <LayoutWrapper>
       {/* Header */}
       <header className="w-full bg-white shadow-sm mb-8">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center space-x-4">
-
-              <h2 className="text-4xl font-bold text-gray-800 mb-4">Welcome to BusLink</h2>
-            </div>
-            {/* <nav className="hidden md:flex space-x-6">
-              <Link href="/book" className="text-gray-600 hover:text-blue-600 transition-colors">
-                Book Trip
-              </Link>
-              <Link href="/admin" className="text-gray-600 hover:text-blue-600 transition-colors">
-                Admin
-              </Link>
-            </nav> */}
+        <div className="container mx-auto px-4 py-4 flex justify-between items-center">
+          <div className="flex items-center space-x-4">
+            <Image
+              src="/logo.jpeg"       // ✅ Correct path to /public/logo.jpeg
+              alt="BusLink Logo"
+              width={150}             // Adjust size as needed
+              height={150}
+              className="rounded-full"
+            />
+            <h2 className="text-4xl font-bold text-gray-800 mb-0 text-center">
+              Welcome to BusLink
+            </h2>
           </div>
         </div>
       </header>
@@ -35,24 +34,22 @@ export default function Home() {
               href="/admin/login"
               className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg text-lg shadow-lg transition-colors transform hover:scale-105"
             >
-              Dashboard 
+              Dashboard
             </Link>
-          
-          </div>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Link
               href="/book"
               className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg text-lg shadow-lg transition-colors transform hover:scale-105"
             >
               Book Your Trip Online
             </Link>
-          
           </div>
         </div>
 
         {/* USSD Simulator Section */}
         <Card className="mb-12">
-          <h3 className="text-2xl font-bold text-center mb-6 text-gray-800">Try Our USSD Booking</h3>
+          <h3 className="text-2xl font-bold text-center mb-6 text-gray-800">
+            Try Our USSD Booking
+          </h3>
           <div className="flex justify-center">
             <USSDSimulator />
           </div>
@@ -67,7 +64,7 @@ export default function Home() {
             <h4 className="font-bold text-lg mb-2 text-gray-800">No App Needed</h4>
             <p className="text-gray-600">Book via USSD or web browser - no downloads required.</p>
           </Card>
-          
+
           <Card className="text-center hover:shadow-xl transition-shadow">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-green-600 text-2xl">📍</span>
@@ -75,7 +72,7 @@ export default function Home() {
             <h4 className="font-bold text-lg mb-2 text-gray-800">Live Tracking</h4>
             <p className="text-gray-600">Track your bus in real-time and know exactly when it will arrive.</p>
           </Card>
-          
+
           <Card className="text-center hover:shadow-xl transition-shadow">
             <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <span className="text-orange-600 text-2xl">🛡️</span>

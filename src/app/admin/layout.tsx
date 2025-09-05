@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function AdminLayout({
   children,
@@ -16,7 +17,7 @@ export default function AdminLayout({
     totalBuses: 12,
     todayRevenue: 4250
   });
-  
+
   const router = useRouter();
   const pathname = usePathname();
 
@@ -29,14 +30,13 @@ export default function AdminLayout({
       router.push('/admin/login');
     }
 
-    // Load real stats from sessionStorage if available
     const completions = JSON.parse(sessionStorage.getItem('ride_completions') || '[]');
     const bookings = JSON.parse(sessionStorage.getItem('bookings') || '[]');
-    
+
     setStats({
       activeBookings: bookings.filter((b: any) => b.status === 'confirmed').length || 85,
-      totalBuses: 12, // Hardcoded for now
-      todayRevenue: 4250 // Hardcoded for now
+      totalBuses: 12,
+      todayRevenue: 4250
     });
   }, [pathname, router]);
 
@@ -80,8 +80,13 @@ export default function AdminLayout({
         <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-4">
-              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                <span className="text-white text-xl font-bold">BL</span>
+              <div className="w-10 h-10 relative">
+                <Image
+                  src="/logo.jpeg"
+                  alt="BusLink Logo"
+                  fill
+                  className="object-contain rounded-lg"
+                />
               </div>
               <div>
                 <h1 className="text-xl font-bold text-gray-900">BusLink Admin</h1>
